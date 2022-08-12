@@ -1,0 +1,16 @@
+{
+  "name": "note",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://gitee.com/asfaff/note.git",
+  "author": "shaoxing <shaoxing4822@dingtalk.com>",
+  "license": "MIT",
+  "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
+  },
+  "devDependencies": {
+    "@vuepress/plugin-medium-zoom": "^1.9.7",
+    "vuepress": "^1.9.7"
+  }
+}
