@@ -1,4 +1,4 @@
-# Jekins
+# Jenkins
 
 > 推荐使用了流水线(`pipeline`)模式,自由风格是为老版本的`jenkins`做兼容而保留的.  
 > `pipeline`又区分声明式(`Declarative Pipeline`)和脚本化(`Scripted Pipeline`).  
