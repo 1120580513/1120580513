@@ -26,5 +26,3 @@
   - `*`：_匹配一个单词_
   - `#`：_一个或多个单词_
 - `Headers Exchange`：_使用键值进行路由_
-
-  Headers Exchange
