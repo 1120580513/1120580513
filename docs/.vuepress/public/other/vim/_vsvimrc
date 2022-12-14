@@ -1,0 +1,95 @@
+" set foldmethod=marker
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => basic {{{
+let mapleader = ","
+set wrapscan " 搜索到最后时回到顶部搜索
+set ignorecase smartcase " 搜索词全小写不区分大小写，有大写字母时区分
+set clipboard=unnamed,unnamedplus " 可直接粘贴外部程序的文本
+set hlsearch " 搜索高亮
+set relativenumber number " 设置行号
+" Set cursor shape and color
+if &term =~ "xterm"
+    " INSERT mode
+    let &t_SI = "\<Esc>[6 q" . "\<Esc>]12;green\x7"
+    " REPLACE mode
+    let &t_SR = "\<Esc>[3 q" . "\<Esc>]12;green\x7"
+    " NORMAL mode
+    let &t_EI = "\<Esc>[2 q" . "\<Esc>]12;green\x7"
+endif
+" 两下 <esc> 取消搜索高亮
+nnoremap <esc><esc> :noh<return><esc>
+" 删除时记录断点方便 u 恢复
+inoremap <c-u> <c-g>u<c-u>
+inoremap <c-w> <c-g>u<c-w>
+" 自动保存折叠信息
+autocmd BufWinLeave *.* mkview
+autocmd BufWinEnter *.* silent loadview
+" }}}
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 设置不同模式下的光标颜色 {{{
+if &term =~ "xterm"
+    " INSERT mode
+    let &t_SI = "\<Esc>[6 q" . "\<Esc>]12;green\x7"
+    " REPLACE mode
+    let &t_SR = "\<Esc>[3 q" . "\<Esc>]12;green\x7"
+    " NORMAL mode
+    let &t_EI = "\<Esc>[2 q" . "\<Esc>]12;green\x7"
+endif
+" }}}
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => map {{{
+nnoremap H ^
+nnoremap L $
+" 两下 <esc> 取消搜索高亮
+nnoremap <esc><esc> :noh<return><esc>
+" 删除时记录断点方便 u 恢复
+inoremap <c-u> <c-g>u<c-u>
+inoremap <c-w> <c-g>u<c-w>
+" 窗口移动直接 Ctrl-hjkl
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+" }}}
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => vs 设置
+nnoremap <c-r> :vsc Redo<CR>
+nnoremap <c-o> :vsc View.NavigateBackward<CR>
+nnoremap <c-i> :vsc View.NavigateForward<CR>
+
+nnoremap gn :vsc Edit.NextMethod<CR> "下一个函数
+nnoremap gr :vsc Edit.FindAllReferences<CR> "查找所有引用
+nnoremap gD :vsc Edit.GoToImplementation<CR> "转到实现
+
+" <leader>/
+nnoremap <leader>/ :vsc 编辑.切换行注释<CR>
+vnoremap <leader>/ :vsc 编辑.切换块注释<CR>
+
+" <leader>w 选项卡
+nnoremap <leader>wc :vsc File.Close<CR>
+nnoremap <leader>wC :vsc Window.CloseAllDocuments<CR>
+
+" <leader>g 转到
+nnoremap <leader>gh :vsc 编辑.转到最近的文件<CR>
+nnoremap <leader>gd :vsc 编辑.转到定义<CR>
+nnoremap <leader>gs :vsc 编辑.转到符号<CR>
+
+" <leader>s 显示/IntelliSense
+nnoremap <leader>s<space> :vsc 编辑.列出成员<CR>
+nnoremap <leader>sq :vsc 编辑.快速信息<CR>
+nnoremap <leader>sp :vsc 编辑.参数信息<CR>
+
+" <leader>n 转到某个视图
+nnoremap <leader>n1 :vsc View.SolutionExplorer<CR> "转到解决方案"
+nnoremap <leader>n2 :vsc 视图.错误列表<CR>
+nnoremap <leader>n3 :vsc 视图.输出<CR>
+nnoremap <leader>n4 :vsc 视图.终端<CR>
+" }}}
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

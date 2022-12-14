@@ -43,18 +43,6 @@
 - Configure()
   - 注册中间件以构成管道
 
-## IHostingStartup
-
-> 从外部库添加功能或配置
-
-- 定义
-  - 无入口
-  - 实现 IHostingStartup
-  - assembly: HostingStartup(typeof(namespace.className))
-- 使用
-  1. 设置环境变量 `ASPNETCORE_HOSTINGSTARTUPASSEMBLIES` 指定程序集
-  2. 通过 `IWebBuilder` 的 `UseSetting` 指定程序集
-
 ## DI -> IoC
 
 > 使用 `DI(依赖注入)` 达到 `IoC(控制反转)` 以使将流程委托给应用程序
@@ -92,3 +80,30 @@
     - IOptions Singleton 不可感知配置变化
     - IOptionSnapshot Scope 可感知配置变化
     - IOptionsMonitor 可感知配置变化，同时支持命名选项
+
+## 扩展
+
+### IHostingStartup
+
+> 从外部库添加功能或配置
+
+- 定义
+  - 无入口
+  - 实现 IHostingStartup
+  - assembly: HostingStartup(typeof(namespace.className))
+- 使用
+  1. 设置环境变量 `ASPNETCORE_HOSTINGSTARTUPASSEMBLIES` 指定程序集
+  2. 通过 `IWebBuilder` 的 `UseSetting` 指定程序集
+
+### IStartupFilter
+
+> 构建配置管道的管道（`Configure`），在 `IHostBuilder` 的 `Build()` 时执行
+
+- 定义
+  - 实现 IStartupFilter
+- 使用 
+  - 在 `ConfigureService` 中注册
+
+### ApplicationPart
+
+> 动态加载外部页面
