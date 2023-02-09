@@ -223,6 +223,22 @@
 - `ldo` : *位置列表，类似快速修复列表，但以 l 为前缀*
 - `lfdo` : *文件方式的位置列表*
 
+## Extend Vim 
+
+```shell
+# 更新 vim
+sudo add-apt-repository ppa:jonathonf/vim
+sudo apt update
+sudo apt install vim
+# 与系统剪贴板交互
+vim --version | grep clipboard
+sudo apt install vim-gtk
+# 安装 NeoVim
+sudo apt-add-repository ppa:neovim-ppa/stable
+sudo apt-get update
+sudo apt-get install neovim
+```
+
 ## 参考 
 
 - [Learn-Vim_zh-cn](https://github.com/wsdjeg/Learn-Vim_zh_cn)

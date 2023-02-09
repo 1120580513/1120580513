@@ -1,6 +1,6 @@
 # Computer Basics
 
-## 备注
+## 术语
 
 ### cpp 预处理器
 ### ccl 编译器
