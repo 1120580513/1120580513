@@ -59,6 +59,8 @@
 
 ## 字符串
 
+> 二进制安全，最大为 512MB，可存储图片或序列化的对象
+
 |  |  |
 | :-----| :---- |
 | SET key value [EX seconds] [PX milliseconds] [NX\|XX] |  | 
@@ -82,6 +84,8 @@
 
 ## 哈希表:H
 
+> 可用来存储对象
+
 |  |  |
 | :-----| :---- |
 | HSET hash field value |  | 
@@ -101,6 +105,8 @@
 | HSCAN key cursor [MATCH pattern] [COUNT count] |  | 
 
 ## 列表:L、R
+
+> 双向链表，最大容量为 2^32-1 个，如实现消息队列，关注列表功能等
 
 |  |  |
 | :-----| :---- |
@@ -124,6 +130,8 @@
 
 ## 集合:S
 
+> set，不会重复，最大容量为 2^32-1，可求交集并集，如共同关注功能等
+
 |  |  |
 | :-----| :---- |
 | SADD key member [member …] |  | 
@@ -143,6 +151,8 @@
 | SDIFFSTORE destination key [key …] |  | 
 
 ## 有序集合:Z
+
+> 自动排序且可指定 double 类型的权重
 
 |  |  |
 | :-----| :---- |

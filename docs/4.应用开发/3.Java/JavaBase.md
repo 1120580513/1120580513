@@ -1,17 +1,242 @@
 # Java 基础
 
-## 基础
-
-- final 构建对象时必须初始化
 - java 中没有引用传递
+- final 构建对象时必须初始化
+- jir 文件实际上是 zip 格式
 - instanceof 是否是某个类的实例
-- Object.equals()
-  - 自反性 x.equals(x) -> true，当 x != null
-  - 对称性 x.equals(y) == y.equals(x)
-    - 一般使用 getClass()
-    - 如果使用 instanceof，则应将类标记为 final
-  - 传递性 x.equals(y) == y.equals(z) == z.equals(x)
-  - 一致性 多次 x.equals(y) 结果一样
-  - x.equals(null) -> false，当 x != null
-- 重载 equals() 时也要重载 hashCode()，此时可以用于散列表
-  - 使用 Objects.has(...) 获取多个字段的散列码
+- implements 实现接口
+- 包装对象，对值类型的包装，仅是持有，不可以通过包装对象做参数来修改值的方法
+- Holder 对象，编写修改数值参数值的方法，如 IntHolder
+- public PrintStream printf(Object... args) 可变参数
+
+---
+
+- enum
+  - public enum Size{SMALL,LARGE};
+  - public enumSize{SMALL("S"),LARGE("L"); private String reamrk; private Size(String remark){this.remark = reamrk;} }
+  - Size.values() 每个枚举类都有一个 values 返回所有枚举值
+  - static Enum valueOf(Class,String) 根据名称返回指定枚举
+  - int ordinal() 返回常量在枚举中的序号
+- class 类
+  - 成员默认是包可见的
+  - extends 继承
+  - super 使用父类的方法
+  - final
+    - 修饰类和方法时不再允许扩展
+    - 修饰域时构造对象后不再允许修改它的值
+- Object 
+  - equals(Object) 比较两个对象是否相等（是否指向同一块内存区域）
+    - 自反性 x.equals(x) -> true，当 x != null
+    - 对称性 x.equals(y) == y.equals(x)
+      - 一般使用 getClass()
+      - 如果使用 instanceof，则应将类标记为 final
+    - 传递性 x.equals(y) == y.equals(z) == z.equals(x)
+    - 一致性 多次 x.equals(y) 结果一样
+    - x.equals(null) -> false，当 x != null
+    - 重载 equals() 时也要重载 hashCode()，此时可以用于散列表
+      - 使用 Objects.has(...) 获取多个字段的散列码
+  - hashCode() 返回散列码
+  - getClass()
+  - toString()
+- Objects
+  - hashCode()
+  - hash(Object ...)
+- Arrays
+  - hashCode(type[])
+- Class
+  - getName()
+  - getSuperclass()
+- ArrayList\<T> 注意，相比数组初始化时没有分配空间
+  - ArrayList\<T>(int initialCapacity)
+  - get()/set()/add(T)/remove()
+  - size()
+  - ensureCapacity(int)
+  - trimToSize()
+  - toArray(T[])
+  - ArrayList\<String> arr = new ArrayList<>(); // new 时可省略具体类型
+  - new ArrayList\<String>(){{add("a"); add("b");}} // 双括号初始化
+
+---
+
+- 反射
+  - Class
+    - static Class forName(String)
+    - Object newInstance()
+    - getFields
+    - getMethods
+    - getConstructors
+  - Constructor
+    - Object newInstance()
+  - Field
+    - get/set
+  - Method
+    - getReturnType
+  - Constructor/Field/Method
+    - getName()
+    - getDeclaringClass()
+    - Class[] getExceptionTypes 返回描述方法抛出异常类型的数组
+    - int getModifiers() 返回标志
+    - Class[] getParamerterTypes
+  - Modifier 对 getModifiers() 解析返回的标志
+    - static String toString(int)
+    - toString 字符串表示
+    - ... 
+  - AccessibleObject
+    - setAccessible(boolean) 设置可访问标志，true 时屏蔽 java 的访问检查
+    - isAccessible
+    - static void setAccessible(AccessibleObject[],boolean)
+- Cloneable 标记接口
+- 内部类
+  - 在类内部
+    - 外部类名.this.外部类成员
+    - 可引用外部类的成员
+  - 局部类 在方法内部，不能用 public 修饰
+  - 匿名内部类
+    - 直接在 new 接口的时候 {} 中声明方法
+  - 静态内部类 static 修饰，只为把某个类隐藏在一个类内部
+    - 此时不能访问外部类的成员
+    - 可用于静态方法的返回值
+- interface
+  - 声明在接口中的内部类，自动是 static 和 public 的
+- Proxy
+  - static boolean isProxyClass(Class) 是否是代理类
+  - static Class getProxyClass(ClassLoader,Class[] interfaces) 返回实现指定接口的代理类
+  - static Object newProxyInstance(ClassLoader,Class[] interfaces,InvocationHandler)
+  - InvocationHandler
+    - Object invoke(Object proxy,Method,Object[] args)
+
+---
+
+- Throwable 异常对象都派生于此
+  - Error 运行时系统的内部错误和资源耗尽，应用程序抛出
+  - Exception
+    - RuntimeException 运行时错误，程序错误导致的异常，基本是程序员的问题
+      - 错误的类型转换
+      - 数组访问越界
+      - 空指针
+    - 非 RuntimeException，一般是 I/O 错误
+      - 试图在文件尾部后面读取数据
+      - 试图打开不存在的文件
+      - 指定字符串查找不存在的 Class 
+  - throws 在方法中声明异常
+    - 可能被他人调用的方法，使用 throws 表明
+    - 程序运行时发现错误，利用 throw 抛出一个异常
+- throw 抛出异常
+- try catch finally
+  - try { try{}finally{} } catch{} 外层保证报告错误，内层保证关闭流
+  - finally 中 return 可能会覆盖原始的值
+  - try(Resourse res =) try 块退出时自动调用 Closeable 的 close()
+- 堆栈跟踪元素
+  - Throwable.printStackTrace()
+  - StackTracelement[] s = Throwable.getStackTrace()
+  - Thread.getAllStackTraces() 得到所有线程的堆栈信息
+- 断言  
+  - assert 条件
+  - assert 条件: 表达式;
+- 日志
+  - ConsoleHandler/FileHandler/SocketHandler
+  - Logger.getGlobal().setLevel(Level.INFO)
+  - Logger.getGlobal().info("")
+  - private static final Logger myLogger = Logger.getLogger("com.xxx.xxx")
+  - entering/exiting 跟踪执行流
+  - addHandler(new FileHandler())
+
+---
+
+- 泛型
+  - static \<T> T getMiddle(T... a)
+  - static \<T extends Comparable> T min(T[] a) 限定符
+  - Java 在实现时，所有的泛型都是普通类，如果有限定符则为指定类型，否则为 Object
+  - 这样在使用时，每个泛型都是相同的类型，不像 c++ 中会导致 模板代码膨胀
+  - 当泛型返回具体类型和调用时，编译器会插入相关的转换指令
+  - 当泛型擦除后的签名与类的其他方法签名冲突时，此时使用桥方法来保证多态
+  - 注意
+    - 虚拟机中没有泛型，只有普通的类和方法
+    - 所有类型参数都用它们的限定类型替换
+    - 桥方法被合成来保持多态
+    - 为保持类型安全，必须时插入强制类型转换
+    - 运行时的类型检查只适用于原始类型
+  - 约束
+    - 不能用基本类型作为泛型参数，因为Object不能存储基本类型（double），必须使用包装类
+    - 不能创建参数化类型的数组
+      - 如 Pair\<String> a = new Pair\<string>[100]
+      - 此时 a 的类型是 Object[]，数组试图存储其他类型会抛出异常
+      - 只是不能用 new 来创建
+      - Pair\<String> a = (Pair\<String>[])new Pair<?>[10] 是合法的
+      - 使用 ArrayList\<Pair\<String>> 可能是唯一安全有效的 
+    - 不能实例化
+      - new T() T.class 是错误的
+      - 必须 static \<T> Pair\<T>make(Class\<T> c){ c.newInstance()} 才是合法的
+      - 使用时直接使用 String.class，它是 Class\<String> 的一个实例
+    - 泛型类的静态上下文中的类型变量无效
+    - 不能抛出或捕获泛型类的实例
+  - 通配符类型
+    - T 一个具体的类型
+    - E Element 
+    - ? 无界通配符，不知道什么类型时使用
+    - \<? Extends E> 上界通配符
+    - \<? super E> 下界通配符
+
+---
+
+- 接口 
+  - Vector
+  - Stack
+  - Hashtable
+  - BitSet
+  - Enumeration 可枚举的
+  - Queue 队列
+  - Iterator 迭代器
+  - Iterable 可遍历的，直接使用 foreach 循环
+  - Collection extend Iterable 标准库中的任何集体都可以 foreach
+- 实现
+  - ArrayList 动态数组
+  - LinkedList 链表
+  - ArrayDeque 双端队列
+  - HashSet 哈希表 
+  - TreeSet 有序集合
+  - EnumSet 包含枚举值的集
+  - LinkedHasthSet 按顺序的哈希表 
+  - PriorityQueue 优先队列
+  - HashMap 映射表
+  - TreeMap 有序映射表
+  - EnumMap 枚举映射表
+  - LinkedHashMap 按顺序的映射表
+  - WeakHashMap 键不引用后自动回收的映射表
+  - IdentityHashMap 使用 == 而不是 equals 比较的映射表
+- 集合框架接口
+  - Iterable
+    - Collection
+      - List
+      - Set
+        - SortedSet
+          - NavigableSet
+      - Queue
+        - Deque
+  - Map
+    - SortedMap
+      - NavigableMap
+  - Iterator
+    - ListIterator
+  - RandomAccess
+- 批操作
+  - retainAll 交集
+
+---
+
+- 线程
+  - 状态
+    - New 新创建，还未运行代码，有一些准备工作要做
+    - Runnable 可运行，调用 start 后处于这个状态
+    - Blocked 被阻塞，等待锁时
+    - Waiting 等待，等待其他线程通知调器一个条件时，自己进入等待状态
+    - Timed waiting 计时等待，等待有超时参数的方法时
+    - Terminated 被终止，正常退出或异常未处理
+  - setDaemon(true) 守护线程，为其他线程提供服务，如果仅存在守护线程虚拟机会退出
+  - Thread.UncaughtExceptionHandler 异常处理程序接口
+- 同步
+  - synchronized
+    - 可对方法声明，此时可调用 wait 和 notify
+  - ReentrantLock
+  - Lock
+  - Condition

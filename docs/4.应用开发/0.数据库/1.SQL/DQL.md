@@ -1,0 +1,24 @@
+# DQL
+
+## 执行顺序
+
+1. FROM
+2. ON
+3. JOIN
+4. WHERE
+5. GROUP BY
+6. WITH CUBE 或 WITH ROLLUP
+  - WITH CUBE 显示所选列中值的所有组合的聚合
+  - WITH ROLLUP 显示所选列值的某一层次结构的聚合
+7. HAVING
+8. SELECT
+9. DISTINCT
+10. ORDER BY
+11. TOP
+
+## 联接 JOIN
+
+- INNER JOIN
+- LEFT JOIN / RIGHT JOIN
+- FULL JOIN
+- CROSS JOIN

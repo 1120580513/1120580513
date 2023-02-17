@@ -1,64 +1,13 @@
-# MSSQL
-
-## 系统数据库
-
-### master
-
-> 由系统表组成，**保存关于磁盘空间、文件分配和使用、系统层次的配置信息、端点登陆帐号的信息，当前实例的数据库信息和系统上其他 SQL Server 的存在信息**
-
-### model
-
-> 该数据库是一相模板数据库，每**创建新数据库时，SQL Server 会复制 model 数据库作为数据库的基础**
-
-### tempdb
-
-> tempdb 用来作为一个工作区，SQL Server 每次启动都会重建该数据库。用来**保存临时表、工作表，维护快照隔离级别和某些其他操作的行版本，填充静态游标和键集游标也会用到该库**
-
-### mssqlsystemresource(resource)
-
-> 该库是一个**隐藏的数据库**。可执行的系统对象(如系统存储过程和函数)。存放在数据目录，可手动复制 mdf 和 ldf 文件来查看其中的内容
-
-```sql
---复制resource库
-CREATE DATABASE resource_copy ON (
-NAME = data,
-FILENAME = 'C:\Program Files\Microsoft SQL Server\MSSQL12.MSSQLSERVER\MSSQL\Binn\mssqlsystemresource.mdf'
-),(
-NAME = log,
-FILENAME = 'C:\Program Files\Microsoft SQL Server\MSSQL12.MSSQLSERVER\MSSQL\Binn\mssqlsystemresource.ldf'
-)
-FOR ATTACH
-```
-
-### msdb
-
-> **SQL Server 代理服务、Service Broker 会使用该库**
+# 常用 SQL
 
 ## 临时表
 
 ```sql
 --局部临时表
 SELECT * INTO #t FROM (VALUES(1,2,3),(4,5,6)) AS t(a,b,c)
-SELECT * FROM #t
 --全局临时表
 SELECT * INTO ##t2 FROM (VALUES(1,2,3),(4,5,6)) AS t(a,b,c)
-SELECT * FROM ##t2
 ```
-
-## 锁
-
-- `HOLDLOCK`：_在该表上保持共享锁，直到整个事务结束，而不是在语句执行完立即释放所添加的锁_
-- `NOLOCK`：_不添加共享锁和排它锁，当这个选项生效后，可能读到未提交读的数据或“脏数据”，这个选项仅仅应用于SELECT语句_
-- `PAGLOCK`：_指定添加页锁（否则通常可能添加表锁）_
-- `READCOMMITTED`：_用与运行在提交读隔离级别的事务相同的锁语义执行扫描。默认情况下，SQL Server 2000 在此隔离级别上操作_
-- `READPAST`：_跳过已经加锁的数据行，这个选项将使事务读取数据时跳过那些已经被其他事务锁定的数据行，而不是阻塞直到其他事务释放锁，READPAST仅仅应用于READ COMMITTED隔离性级别下事务操作中的SELECT语句操作_
-- `READUNCOMMITTED`：_等同于NOLOCK_
-- `REPEATABLEREAD`：_设置事务为可重复读隔离性级别_
-- `ROWLOCK`：_使用行级锁，而不使用粒度更粗的页级锁和表级锁_
-- `SERIALIZABLE`：_用与运行在可串行读隔离级别的事务相同的锁语义执行扫描。等同于 HOLDLOCK_
-- `TABLOCK`：_指定使用表级锁，而不是使用行级或页面级的锁，SQL Server在该语句执行完后释放这个锁，而如果同时指定了HOLDLOCK，该锁一直保持到这个事务结束_
-- `TABLOCKX `：_指定在表上使用排它锁，这个锁可以阻止其他事务读或更新这个表的数据，直到这个语句或整个事务结束_
-- `UPDLOCK `：_指定在读表中数据时设置更新 锁（update lock）而不是设置共享锁，该锁一直保持到这个语句或整个事务结束，使用UPDLOCK的作用是允许用户先读取数据（而且不阻塞其他用户读数据），并且保证在后来再更新数据时，这一段时间内这些数据没有被其他用户修改_
 
 ## Select Remote DB
 
@@ -101,7 +50,7 @@ u,i,y,p
 SELECT * FROM (VALUES(1)) AS t(n) FOR XML PATH('')
 ```
 
-## 常用 SQL
+## 常用查询
 
 ```sql
 SELECT * FROM sys.objects WHERE type = 'u'
@@ -351,8 +300,3 @@ BEGIN CATCH
 SELECT ERROR_NUMBER(),ERROR_SEVERITY(),ERROR_STATE(),ERROR_PROCEDURE(),ERROR_LINE(),ERROR_MESSAGE()
 END CATCH
 ```
-
-## 文章/链接
-
-- [SQL Server 不按预期工作的 10 件事](http://blog.jobbole.com/44050/)
-- [Microsoft Sql Server Doc](https://docs.microsoft.com/zh-cn/sql/relational-databases/hierarchical-data-sql-server?view=sql-server-ver15)
